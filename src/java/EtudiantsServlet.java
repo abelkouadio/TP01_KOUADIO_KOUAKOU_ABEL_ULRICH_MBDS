@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author MSI
  */
-public class ExperimentServlet extends HttpServlet {
+public class EtudiantsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,11 +34,20 @@ public class ExperimentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ExperimentServlet</title>");            
+            out.println("<title>Servlet EtudiantsServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ExperimentServlet at " + request.getContextPath() + "</h1>");
-            
+            out.println("<h1>Servlet EtudiantsServlet at " + request.getContextPath() + "</h1>");
+              out.println("<FORM METHOD=POST>");
+                        out.println("<h4> NOM</h4>");
+                        out.println("<input name=nom/>");
+                        out.println("<h4> Prenom</h4>");
+                        out.println("<input name=prenom/>");
+                        out.println("<h4> Email</h4>");
+                        out.println("<input name=email/>");
+                         out.println("<input type=submit value=envoyer>");
+                              out.println("</FORM>");
+
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,7 +79,11 @@ public class ExperimentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+           String nom = request.getParameter("nom");
+           String prenom = request.getParameter("prenom");
+            String email = request.getParameter("email");
+
     }
 
     /**
