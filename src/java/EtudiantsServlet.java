@@ -4,16 +4,28 @@
  * and open the template in the editor.
  */
 
+import com.sun.xml.rpc.processor.modeler.j2ee.xml.string;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import static java.lang.System.out;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author MSI
+ * @author HP
  */
 public class EtudiantsServlet extends HttpServlet {
 
@@ -28,26 +40,59 @@ public class EtudiantsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EtudiantsServlet</title>");            
+            out.println("<title>Servlet EtudiantsServlet</title>");
             out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet EtudiantsServlet at " + request.getContextPath() + "</h1>");
-              out.println("<FORM METHOD=POST>");
-                        out.println("<h4> NOM</h4>");
-                        out.println("<input name=nom/>");
-                        out.println("<h4> Prenom</h4>");
-                        out.println("<input name=prenom/>");
-                        out.println("<h4> Email</h4>");
-                        out.println("<input name=email/>");
-                         out.println("<input type=submit value=envoyer>");
-                              out.println("</FORM>");
+            out.println("<body >");
+            out.println("<h1>GESTION DES ETUDIANTS DE LA MBDS COTE IVOIRE</h1>");
+            try {
 
+                InputStream flux = new FileInputStream("etudiants.csv");
+                InputStreamReader lecture = new InputStreamReader(flux);
+                BufferedReader buff = new BufferedReader(lecture);
+                String ligne;
+                final String SEPARATEUR = ",";
+
+                out.println("<table border=1;style=\"color:red\">");
+                out.println("<TBODY >");
+
+                out.println("<tr>");
+                out.println("<td>NOM</td>");
+                out.println("<td>PRENOM</td>");
+                out.println("<td>EMAIL</td>");
+
+                out.println("</tr>");
+
+                while ((ligne = buff.readLine()) != null) {
+                    //out.println(ligne);
+                    out.println("<br>");
+                    String mots[] = ligne.split(SEPARATEUR);
+                    out.println("<tr>");
+
+                    for (int i = 0; i < mots.length; i++) {
+                        out.println("<td>");
+
+                        out.println("\t" + mots[i] + "\t");
+                        out.println("</td>");
+
+                    }
+
+                }
+                out.println("</tr>");
+                out.println("</TBODY>");
+
+                out.println("</table>");
+
+                buff.close();
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,6 +111,7 @@ public class EtudiantsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
     }
 
     /**
@@ -79,10 +125,17 @@ public class EtudiantsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-           String nom = request.getParameter("nom");
-           String prenom = request.getParameter("prenom");
-            String email = request.getParameter("email");
+        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        out.println("INSERTION VALIDE AVEC SUCCESS");
+        //out.println(request.getParameter("nom"));
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String email = request.getParameter("email");
+
+        saveRecord(nom, prenom, email, filepath);
+        response.sendRedirect("http://localhost:8080/TP01_KOUADIO_KOUAKOU_ABEL_ULRICH_MBDS/etudiants");
+        response.sendRedirect("http://localhost:8080/TP01_KOUADIO_KOUAKOU_ABEL_ULRICH_MBDS/etudiants");
 
     }
 
@@ -95,5 +148,21 @@ public class EtudiantsServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    String filepath = "etudiants.csv";
+
+    public static void saveRecord(String nom, String prenom, String email, String filepath) {
+        try {
+            FileWriter fw = new FileWriter(filepath, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+
+            pw.println(nom + ',' + prenom + ',' + email);
+            pw.flush();
+            pw.close();
+
+        } catch (Exception E) {
+        }
+    }
 
 }
