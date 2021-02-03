@@ -16,3 +16,5 @@ GET : permet de recuperer une ressource
 POST : permet de creer une ressource
 PUT : permet de mettre a jour une ressource
 DELETE : permet de supprimer une ressource
+
+3-LE FICHIER ETUDIANTS.CSV SE TROUVE DANS : C:\Users\HP\AppData\Roaming\NetBeans\8.2rc\config\GF_4.1.1\domain1\config
