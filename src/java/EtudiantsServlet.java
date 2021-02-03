@@ -125,7 +125,7 @@ public class EtudiantsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       // processRequest(request, response);
         PrintWriter out = response.getWriter();
         out.println("INSERTION VALIDE AVEC SUCCESS");
         //out.println(request.getParameter("nom"));
@@ -134,8 +134,7 @@ public class EtudiantsServlet extends HttpServlet {
         String email = request.getParameter("email");
 
         saveRecord(nom, prenom, email, filepath);
-        response.sendRedirect("http://localhost:8080/TP01_KOUADIO_KOUAKOU_ABEL_ULRICH_MBDS/etudiants");
-        response.sendRedirect("http://localhost:8080/TP01_KOUADIO_KOUAKOU_ABEL_ULRICH_MBDS/etudiants");
+                    doGet(request,response);
 
     }
 
